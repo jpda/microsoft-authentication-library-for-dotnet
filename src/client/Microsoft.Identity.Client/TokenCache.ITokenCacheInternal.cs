@@ -51,8 +51,10 @@ namespace Microsoft.Identity.Client
                                     requestParams.RequestContext)
                                 .ConfigureAwait(false);
 
-            var msalAccessTokenCacheItem =
-                new MsalAccessTokenCacheItem(
+            MsalAccessTokenCacheItem msalAccessTokenCacheItem = null;
+            if (!string.IsNullOrEmpty(response.AccessToken))
+            {
+                msalAccessTokenCacheItem = new MsalAccessTokenCacheItem(
                     instanceDiscoveryMetadata.PreferredCache,
                     requestParams.ClientId,
                     response,
@@ -63,6 +65,7 @@ namespace Microsoft.Identity.Client
                     UserAssertionHash = requestParams.UserAssertion?.AssertionHash,
                     IsAdfs = isAdfsAuthority
                 };
+            }
 
             MsalRefreshTokenCacheItem msalRefreshTokenCacheItem = null;
             MsalIdTokenCacheItem msalIdTokenCacheItem = null;
@@ -86,10 +89,12 @@ namespace Microsoft.Identity.Client
                 {
                     Account account = null;
                     string username = isAdfsAuthority ? idToken?.Upn : preferredUsername;
-                    if (msalAccessTokenCacheItem.HomeAccountId != null)
+
+                    // TODO: HomeAccountID can be picked up from the IDToken as well.
+                    if (msalAccessTokenCacheItem?.HomeAccountId != null)
                     {
                         account = new Account(
-                                          msalAccessTokenCacheItem.HomeAccountId,
+                                          msalAccessTokenCacheItem?.HomeAccountId,
                                           username,
                                           instanceDiscoveryMetadata.PreferredCache);
                     }
@@ -104,15 +109,18 @@ namespace Microsoft.Identity.Client
                     {
                         await (this as ITokenCacheInternal).OnBeforeWriteAsync(args).ConfigureAwait(false);
 
-                        DeleteAccessTokensWithIntersectingScopes(
-                            requestParams,
-                            instanceDiscoveryMetadata.Aliases,
-                            tenantId,
-                            msalAccessTokenCacheItem.ScopeSet,
-                            msalAccessTokenCacheItem.HomeAccountId,
-                            msalAccessTokenCacheItem.TokenType);
+                        if (msalAccessTokenCacheItem != null)
+                        {
+                            DeleteAccessTokensWithIntersectingScopes(
+                                requestParams,
+                                instanceDiscoveryMetadata.Aliases,
+                                tenantId,
+                                msalAccessTokenCacheItem.ScopeSet,
+                                msalAccessTokenCacheItem.HomeAccountId,
+                                msalAccessTokenCacheItem.TokenType);
 
-                        _accessor.SaveAccessToken(msalAccessTokenCacheItem);
+                            _accessor.SaveAccessToken(msalAccessTokenCacheItem);
+                        }
 
                         if (idToken != null)
                         {

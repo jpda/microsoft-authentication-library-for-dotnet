@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #if !WINDOWS_APP && !ANDROID && !iOS // U/P not available on UWP, Android and iOS
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Security;
@@ -40,21 +42,23 @@ namespace Microsoft.Identity.Test.Integration.HeadlessTests
         public async Task ROPC_AAD_Async()
         {
             var labResponse = await LabUserHelper.GetDefaultUserAsync().ConfigureAwait(false);
-            await RunHappyPathTestAsync(labResponse).ConfigureAwait(false);
+            await RunHappyPathTestAsync(labResponse, s_scopes).ConfigureAwait(false);
         }
+
+     
 
         [TestMethod]
         public async Task ROPC_ADFSv4Federated_Async()
         {
             var labResponse = await LabUserHelper.GetAdfsUserAsync(FederationProvider.AdfsV4, true).ConfigureAwait(false);
-            await RunHappyPathTestAsync(labResponse).ConfigureAwait(false);
+            await RunHappyPathTestAsync(labResponse, s_scopes).ConfigureAwait(false);
         }
 
         [TestMethod]
         public async Task ROPC_ADFSv3Federated_Async()
         {
             var labResponse = await LabUserHelper.GetAdfsUserAsync(FederationProvider.AdfsV3, true).ConfigureAwait(false);
-            await RunHappyPathTestAsync(labResponse).ConfigureAwait(false);
+            await RunHappyPathTestAsync(labResponse, s_scopes).ConfigureAwait(false);
         }
 
         [TestMethod]
@@ -75,6 +79,13 @@ namespace Microsoft.Identity.Test.Integration.HeadlessTests
         }
 
         #endregion
+
+        [TestMethod]
+        public async Task ROPC_AAD_NoScopes_Async()
+        {
+            var labResponse = await LabUserHelper.GetDefaultUserAsync().ConfigureAwait(false);
+            await RunHappyPathTestAsync(labResponse, null).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// ROPC does not support MSA accounts
@@ -150,7 +161,7 @@ namespace Microsoft.Identity.Test.Integration.HeadlessTests
             Assert.AreEqual(result.ErrorCode, "invalid_grant");
         }
 
-        private async Task RunHappyPathTestAsync(LabResponse labResponse)
+        private async Task RunHappyPathTestAsync(LabResponse labResponse, IEnumerable<string> scopes)
         {
             var user = labResponse.User;
 
@@ -160,7 +171,7 @@ namespace Microsoft.Identity.Test.Integration.HeadlessTests
 
             //AuthenticationResult authResult = await msalPublicClient.AcquireTokenByUsernamePasswordAsync(Scopes, user.Upn, securePassword).ConfigureAwait(false);
             AuthenticationResult authResult = await msalPublicClient
-                .AcquireTokenByUsernamePassword(s_scopes, user.Upn, securePassword)
+                .AcquireTokenByUsernamePassword(scopes, user.Upn, securePassword)
                 .ExecuteAsync(CancellationToken.None)
                 .ConfigureAwait(false);
 

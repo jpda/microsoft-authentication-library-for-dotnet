@@ -69,9 +69,11 @@ namespace Microsoft.Identity.Client
             Guid correlationID)
         {
             _authenticationScheme = authenticationScheme ?? throw new ArgumentNullException(nameof(authenticationScheme));
-
-            if (msalAccessTokenCacheItem.HomeAccountId != null)
+            
+            // BUG: this logic is wrong, the Account should be populated from the account cache item
+            if (msalAccessTokenCacheItem?.HomeAccountId != null)
             {
+                // BUGBUG: this is wrong, IsAdfs isn't correctly populated
                 string username = msalAccessTokenCacheItem.IsAdfs ? msalIdTokenCacheItem?.IdToken.Upn : msalIdTokenCacheItem?.IdToken?.PreferredUsername;
                 Account = new Account(
                     msalAccessTokenCacheItem.HomeAccountId,

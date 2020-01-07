@@ -50,11 +50,6 @@ namespace Microsoft.Identity.Client.Internal.Requests
                 throw new ArgumentNullException(nameof(acquireTokenParameters));
             }
 
-            if (authenticationRequestParameters.Scope == null || authenticationRequestParameters.Scope.Count == 0)
-            {
-                throw new ArgumentNullException(nameof(authenticationRequestParameters.Scope));
-            }
-
             ValidateScopeInput(authenticationRequestParameters.Scope);
 
             acquireTokenParameters.LogParameters(AuthenticationRequestParameters.RequestContext.Logger);
@@ -332,7 +327,8 @@ namespace Microsoft.Identity.Client.Internal.Requests
             MsalTokenResponse response = await SendHttpMessageAsync(client, tokenEndpoint)
                 .ConfigureAwait(false);
 
-            if (!string.Equals(
+            if (!string.IsNullOrEmpty(response.TokenType) && // in case AT is not returned
+                !string.Equals(
                     response.TokenType, 
                     AuthenticationRequestParameters.AuthenticationScheme.AccessTokenType, 
                     StringComparison.OrdinalIgnoreCase))
