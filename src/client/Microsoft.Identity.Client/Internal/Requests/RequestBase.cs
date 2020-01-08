@@ -135,6 +135,10 @@ namespace Microsoft.Identity.Client.Internal.Requests
                         apiEvent.TenantId = authenticationResult.TenantId;
                         apiEvent.AccountId = authenticationResult.UniqueId;
                         apiEvent.WasSuccessful = true;
+                        if (AuthenticationRequestParameters.ApiId == ApiEvent.ApiIds.AcquireTokenSilent)
+                        {
+                            AuthenticationRequestParameters.RequestContext.ServiceBundle.TelemetryManager.SuccessfulSilentCallCount ++;
+                        }
                         return authenticationResult;
                     }
                     catch (MsalException ex)
