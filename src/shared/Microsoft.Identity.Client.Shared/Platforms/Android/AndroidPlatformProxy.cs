@@ -14,8 +14,6 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.TelemetryCore.Internal;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.PlatformsCommon.Shared;
-using Microsoft.Identity.Client.UI;
-using Microsoft.Identity.Client.Internal.Broker;
 
 namespace Microsoft.Identity.Client.Platforms.Android
 {
@@ -31,25 +29,6 @@ namespace Microsoft.Identity.Client.Platforms.Android
 
         public AndroidPlatformProxy(ICoreLogger logger) : base(logger)
         {
-        }
-
-        /// <summary>
-        /// Get the user logged in
-        /// </summary>
-        /// <returns>The username or throws</returns>
-        public override Task<string> GetUserPrincipalNameAsync()
-        {
-            return Task.FromResult(string.Empty);
-
-        }
-        public override Task<bool> IsUserLocalAsync(RequestContext requestContext)
-        {
-            return Task.FromResult(false);
-        }
-
-        public override bool IsDomainJoined()
-        {
-            return false;
         }
 
         public override string GetEnvironmentVariable(string variable)
@@ -141,12 +120,6 @@ namespace Microsoft.Identity.Client.Platforms.Android
             return new AndroidTokenCacheAccessor();
         }
 
-        /// <inheritdoc />
-        protected override IWebUIFactory CreateWebUiFactory()
-        {
-            return new AndroidWebUIFactory();
-        }
-
         protected override ICryptographyManager InternalGetCryptographyManager() => new AndroidCryptographyManager();
         protected override IPlatformLogger InternalGetPlatformLogger() => new AndroidPlatformLogger();
 
@@ -218,20 +191,5 @@ namespace Microsoft.Identity.Client.Platforms.Android
         }
 
         public override bool UseEmbeddedWebViewDefault => false;
-
-        public override IBroker CreateBroker(CoreUIParent uIParent)
-        {
-            if (OverloadBrokerForTest != null)
-            {
-                return OverloadBrokerForTest;
-            }
-
-            return new AndroidBroker(uIParent, Logger);
-        }
-
-        public override bool CanBrokerSupportSilentAuth()
-        {
-            return true;
-        }
     }
 }

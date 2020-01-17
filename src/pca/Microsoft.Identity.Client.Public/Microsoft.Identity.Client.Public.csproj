@@ -2,15 +2,16 @@
 
   <Import Project="..\..\ConstantsForLibAssemblies.props" />
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <CodeAnalysisRuleSet />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <CodeAnalysisRuleSet />
-  </PropertyGroup>
-
   <ItemGroup>
     <ReferenceAssemblyProjectReference Include="..\Microsoft.Identity.Client.Public.Ref\Microsoft.Identity.Client.Public.Ref.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Platforms\net45\NetDesktopPcaPlatformProxy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Platforms\net45\NetDesktopPcaPlatformProxy.cs" />
+  </ItemGroup>
+
 </Project>

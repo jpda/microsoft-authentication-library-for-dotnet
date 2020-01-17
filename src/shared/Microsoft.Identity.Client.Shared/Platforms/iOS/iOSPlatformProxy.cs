@@ -32,24 +32,6 @@ namespace Microsoft.Identity.Client.Platforms.iOS
 
         public override bool UseEmbeddedWebViewDefault => false;
 
-        /// <summary>
-        /// Get the user logged
-        /// </summary>
-        public override Task<string> GetUserPrincipalNameAsync()
-        {
-            return Task.FromResult(string.Empty);
-        }
-
-        public override Task<bool> IsUserLocalAsync(RequestContext requestContext)
-        {
-            return Task.FromResult(false);
-        }
-
-        public override bool IsDomainJoined()
-        {
-            return false;
-        }
-
         public override string GetEnvironmentVariable(string variable)
         {
             return null;
@@ -125,12 +107,6 @@ namespace Microsoft.Identity.Client.Platforms.iOS
             return new iOSTokenCacheAccessor();
         }
 
-        /// <inheritdoc />
-        protected override IWebUIFactory CreateWebUiFactory()
-        {
-            return new IosWebUIFactory();
-        }
-
         protected override ICryptographyManager InternalGetCryptographyManager() => new iOSCryptographyManager();
         protected override IPlatformLogger InternalGetPlatformLogger() => new ConsolePlatformLogger();
 
@@ -157,15 +133,5 @@ namespace Microsoft.Identity.Client.Platforms.iOS
         }
 
         protected override IFeatureFlags CreateFeatureFlags() => new iOSFeatureFlags();
-
-        public override IBroker CreateBroker(CoreUIParent uIParent)
-        {
-            if (OverloadBrokerForTest != null)
-            {
-                return OverloadBrokerForTest;
-            }
-
-            return new iOSBroker(Logger, CryptographyManager, uIParent);
-        }
     }
 }

@@ -787,6 +787,8 @@ namespace Microsoft.Identity.Client
         /// <para>For more details</para> see https://aka.ms/msal-net-ios-broker
         /// </summary>
         public const string ReadingApplicationTokenFromKeychainFailed = "reading_application_token_from_keychain_failed";
+
+        public const string BrokerApplicationRequired = "broker_application_required";
 #endif
 
 #if ANDROID

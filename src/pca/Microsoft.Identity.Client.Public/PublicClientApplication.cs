@@ -8,6 +8,8 @@ using System.Security;
 using Microsoft.Identity.Client.ApiConfig.Executors;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.WsTrust;
+using Microsoft.Identity.Client.Public.PlatformsCommon;
+using Microsoft.Identity.Client.PlatformsCommon;
 
 namespace Microsoft.Identity.Client
 {
@@ -31,7 +33,12 @@ namespace Microsoft.Identity.Client
             : base(configuration)
         {
             // Register PCA specific objects
-            ServiceBundle.Register(new WsTrustWebRequestManager(ServiceBundle.HttpManager);)
+            ServiceBundle.Register<IWsTrustWebRequestManager>(new WsTrustWebRequestManager(ServiceBundle.HttpManager);
+
+            // TODO: allow injection of a test platform proxy
+            IPcaPlatformProxy pcaPlatformProxy = 
+                PcaPlatformProxyFactory.CreatePcaPlatformProxy(ServiceBundle.DefaultLogger);
+            ServiceBundle.Register<IPcaPlatformProxy>(pcaPlatformProxy);
         }
 
         /// <summary>

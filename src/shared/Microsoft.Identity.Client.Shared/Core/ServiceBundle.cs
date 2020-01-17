@@ -75,6 +75,7 @@ namespace Microsoft.Identity.Client.Core
             return new ServiceBundle(config);
         }
 
+        #region Service Locator
         private readonly IDictionary<Type, object> _dependencyImplementations = new Dictionary<Type, object>();
 
         /// <summary>
@@ -107,5 +108,7 @@ namespace Microsoft.Identity.Client.Core
 
             return _dependencyImplementations[targetType] as T;
         }
+
+        #endregion
     }
 }

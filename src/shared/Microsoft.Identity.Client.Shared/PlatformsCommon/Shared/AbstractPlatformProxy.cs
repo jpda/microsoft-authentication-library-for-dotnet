@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Identity.Client.AuthScheme.PoP;
 using Microsoft.Identity.Client.Cache;
 using Microsoft.Identity.Client.Core;
-using Microsoft.Identity.Client.Internal.Broker;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
-using Microsoft.Identity.Client.UI;
 
 namespace Microsoft.Identity.Client.PlatformsCommon.Shared
 {
@@ -54,22 +52,9 @@ namespace Microsoft.Identity.Client.PlatformsCommon.Shared
             }
         }
 
-        protected IWebUIFactory OverloadWebUiFactory { get; set; }
         protected IFeatureFlags OverloadFeatureFlags { get; set; }
 
         protected ICoreLogger Logger { get; }
-
-        /// <inheritdoc />
-        public IWebUIFactory GetWebUiFactory()
-        {
-            return OverloadWebUiFactory ?? CreateWebUiFactory();
-        }
-
-        /// <inheritdoc />
-        public void SetWebUiFactory(IWebUIFactory webUiFactory)
-        {
-            OverloadWebUiFactory = webUiFactory;
-        }
 
         /// <inheritdoc />
         public string GetDeviceModel()
@@ -91,15 +76,6 @@ namespace Microsoft.Identity.Client.PlatformsCommon.Shared
         {
             return _processorArchitecture.Value;
         }
-
-        /// <inheritdoc />
-        public abstract Task<string> GetUserPrincipalNameAsync();
-
-        /// <inheritdoc />
-        public abstract bool IsDomainJoined();
-
-        /// <inheritdoc />
-        public abstract Task<bool> IsUserLocalAsync(RequestContext requestContext);
 
         /// <inheritdoc />
         public string GetCallingApplicationName()
@@ -143,12 +119,7 @@ namespace Microsoft.Identity.Client.PlatformsCommon.Shared
         /// <inheritdoc />
         public IPlatformLogger PlatformLogger => _platformLogger.Value;
 
-        protected IBroker OverloadBrokerForTest { get; private set; }
-
-        protected abstract IWebUIFactory CreateWebUiFactory();
         protected abstract IFeatureFlags CreateFeatureFlags();
-
-        
 
         protected abstract string InternalGetDeviceModel();
         protected abstract string InternalGetOperatingSystem();
@@ -178,26 +149,6 @@ namespace Microsoft.Identity.Client.PlatformsCommon.Shared
         public void SetFeatureFlags(IFeatureFlags featureFlags)
         {
             OverloadFeatureFlags = featureFlags;
-        }
-
-        public void SetBrokerForTest(IBroker broker)
-        {
-            OverloadBrokerForTest = broker;
-        }
-
-        public virtual Task StartDefaultOsBrowserAsync(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual IBroker CreateBroker(CoreUIParent uIParent)
-        {
-            return OverloadBrokerForTest ?? new NullBroker();
-        }
-
-        public virtual bool CanBrokerSupportSilentAuth()
-        {
-            return false;
         }
         
         public virtual IPoPCryptoProvider GetDefaultPoPCryptoProvider()

@@ -81,8 +81,6 @@
     <!-- Manually include the cs files -->
     <Compile Include="$(PathToSources)\**\*.cs" Exclude="$(PathToSources)\obj\**\*.*" />
     <Compile Remove="$(PathToSources)\Platforms\**\*.*;$(PathToSources)\Resources\*.cs" />
-
-    <!--<EmbeddedResource Include="$(PathToSources)\Properties\Microsoft.Identity.Client.Public.rd.xml" />-->
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(TargetFrameworkNetStandard)'">

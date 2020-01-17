@@ -141,7 +141,7 @@ namespace Microsoft.Identity.Client.Platforms.iOS
 
                 DispatchQueue.MainQueue.DispatchAsync(() => UIApplication.SharedApplication.OpenUrl(new NSUrl(keyPair[iOSBrokerConstants.AppLink])));
 
-                throw new MsalClientException(MsalErrorIOSEx.BrokerApplicationRequired, MsalErrorMessageIOSEx.BrokerApplicationRequired);
+                throw new MsalClientException(MsalError.BrokerApplicationRequired, MsalErrorMessage.BrokerApplicationRequired);
             }
 
             else

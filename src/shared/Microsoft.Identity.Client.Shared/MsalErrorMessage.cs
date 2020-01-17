@@ -319,5 +319,6 @@ namespace Microsoft.Identity.Client
                 requestTokenType, responseTokenType);
         }
 
+        public const string BrokerApplicationRequired = "Installation of broker failed. The broker application must be installed to continue authentication.";
     }
 }

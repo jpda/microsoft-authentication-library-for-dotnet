@@ -28,24 +28,6 @@ namespace Microsoft.Identity.Client.Platforms.Mac
         {
         }
 
-        /// <summary>
-        ///     Get the user logged
-        /// </summary>
-        public override Task<string> GetUserPrincipalNameAsync()
-        {
-            return Task.FromResult(string.Empty);
-        }
-
-        public override Task<bool> IsUserLocalAsync(RequestContext requestContext)
-        {
-            return Task.FromResult(false);
-        }
-
-        public override bool IsDomainJoined()
-        {
-            return false;
-        }
-
         public override string GetEnvironmentVariable(string variable)
         {
             if (string.IsNullOrWhiteSpace(variable))
@@ -143,7 +125,6 @@ namespace Microsoft.Identity.Client.Platforms.Mac
             return new InMemoryTokenCacheAccessor();
         }
 
-        protected override IWebUIFactory CreateWebUiFactory() => new MacUIFactory();
         protected override ICryptographyManager InternalGetCryptographyManager() => new MacCryptographyManager();
         protected override IPlatformLogger InternalGetPlatformLogger() => new ConsolePlatformLogger();
 
@@ -170,10 +151,5 @@ namespace Microsoft.Identity.Client.Platforms.Mac
         }
         protected override IFeatureFlags CreateFeatureFlags() => new MacFeatureFlags();
 
-        public override Task StartDefaultOsBrowserAsync(string url)
-        {
-            Process.Start("open", url);
-            return Task.FromResult(0);
-        }
     }
 }

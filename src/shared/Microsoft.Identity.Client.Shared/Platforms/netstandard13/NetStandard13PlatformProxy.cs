@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.Cache;
 using Microsoft.Identity.Client.Core;
@@ -15,34 +11,39 @@ using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.PlatformsCommon.Shared;
 using Microsoft.Identity.Client.UI;
 
-namespace Microsoft.Identity.Client.Platforms.netcore
+namespace Microsoft.Identity.Client.Platforms.netstandard13
 {
     /// <summary>
     /// Platform / OS specific logic.  No library (ADAL / MSAL) specific code should go in here.
     /// </summary>
-    internal class NetCorePlatformProxy : AbstractPlatformProxy
+    internal class Netstandard13PlatformProxy : AbstractPlatformProxy
     {
-        public NetCorePlatformProxy(ICoreLogger logger)
+        public Netstandard13PlatformProxy(ICoreLogger logger)
             : base(logger)
         {
         }
 
-        /// <summary>
-        /// Get the user logged in
-        /// </summary>
-        public override Task<string> GetUserPrincipalNameAsync()
+        /// <inheritdoc />
+        public override string GetBrokerOrRedirectUri(Uri redirectUri)
         {
-            return Task.FromResult(string.Empty);
+            return redirectUri.OriginalString;
         }
 
-        public override Task<bool> IsUserLocalAsync(RequestContext requestContext)
+        /// <inheritdoc />
+        public override string GetDefaultRedirectUri(string clientId, bool useRecommendedRedirectUri = false)
         {
-            return Task.FromResult(false);
+            if (useRecommendedRedirectUri)
+            {
+                return Constants.NativeClientRedirectUri;
+            }
+
+            return Constants.DefaultRedirectUri;
         }
 
-        public override bool IsDomainJoined()
+        /// <inheritdoc />
+        protected override string InternalGetProductName()
         {
-            return false;
+            return "MSAL.CoreCLR";
         }
 
         public override string GetEnvironmentVariable(string variable)
@@ -62,34 +63,12 @@ namespace Microsoft.Identity.Client.Platforms.netcore
 
         protected override string InternalGetOperatingSystem()
         {
-            return System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+            return null;
         }
 
         protected override string InternalGetDeviceModel()
         {
             return null;
-        }
-
-        /// <inheritdoc />
-        public override string GetBrokerOrRedirectUri(Uri redirectUri)
-        {
-            return redirectUri.OriginalString;
-        }
-
-        /// <inheritdoc />
-        public override string GetDefaultRedirectUri(string clientId, bool useRecommendedRedirectUri = false)
-        {
-            if (useRecommendedRedirectUri)
-            {
-                return Constants.LocalHostRedirectUri;
-            }
-
-            return Constants.DefaultRedirectUri;
-        }
-
-        protected override string InternalGetProductName()
-        {
-            return "MSAL.NetCore";
         }
 
         /// <summary>
@@ -98,7 +77,7 @@ namespace Microsoft.Identity.Client.Platforms.netcore
         /// <returns>Name of the calling application</returns>
         protected override string InternalGetCallingApplicationName()
         {
-            return Assembly.GetEntryAssembly()?.GetName()?.Name?.ToString(CultureInfo.InvariantCulture);
+            return null;
         }
 
         /// <summary>
@@ -107,7 +86,7 @@ namespace Microsoft.Identity.Client.Platforms.netcore
         /// <returns>Version of the calling application</returns>
         protected override string InternalGetCallingApplicationVersion()
         {
-            return Assembly.GetEntryAssembly()?.GetName()?.Version?.ToString();
+            return null;
         }
 
         /// <summary>
@@ -116,7 +95,7 @@ namespace Microsoft.Identity.Client.Platforms.netcore
         /// <returns>Device identifier</returns>
         protected override string InternalGetDeviceId()
         {
-            return Environment.MachineName;
+            return null;
         }
 
         public override ILegacyCachePersistence CreateLegacyCachePersistence()
@@ -129,8 +108,7 @@ namespace Microsoft.Identity.Client.Platforms.netcore
             return new InMemoryTokenCacheAccessor();
         }
 
-        protected override IWebUIFactory CreateWebUiFactory() => new NetCoreWebUIFactory();
-        protected override ICryptographyManager InternalGetCryptographyManager() => new NetCoreCryptographyManager();
+        protected override ICryptographyManager InternalGetCryptographyManager() => new NetStandard13CryptographyManager();
         protected override IPlatformLogger InternalGetPlatformLogger() => new EventSourcePlatformLogger();
 
         public override string GetDeviceNetworkState()
@@ -156,14 +134,10 @@ namespace Microsoft.Identity.Client.Platforms.netcore
             // TODO(mats): need to detect operating system and switch on it to determine proper enum
             return MatsConverter.AsInt(OsPlatform.Win32);
         }
-        protected override IFeatureFlags CreateFeatureFlags() => new NetCoreFeatureFlags();
 
-        public override Task StartDefaultOsBrowserAsync(string url)
-        {
-            PlatformProxyShared.StartDefaultOsBrowser(url);
-            return Task.FromResult(0);
-        }
+        protected override IFeatureFlags CreateFeatureFlags() => new NetStandardFeatureFlags();
 
         public override bool UseEmbeddedWebViewDefault => false;
+
     }
 }
