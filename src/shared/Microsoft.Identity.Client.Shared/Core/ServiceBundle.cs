@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Identity.Client.Http;
 using Microsoft.Identity.Client.Instance;
 using Microsoft.Identity.Client.Instance.Discovery;
@@ -9,7 +10,6 @@ using Microsoft.Identity.Client.Internal;
 using Microsoft.Identity.Client.PlatformsCommon.Factories;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.TelemetryCore;
-using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.Core
 {
@@ -45,7 +45,7 @@ namespace Microsoft.Identity.Client.Core
             }
 
             InstanceDiscoveryManager = new InstanceDiscoveryManager(HttpManager, TelemetryManager, shouldClearCaches, config.CustomInstanceDiscoveryMetadata);
-            WsTrustWebRequestManager = new WsTrustWebRequestManager(HttpManager);
+           // WsTrustWebRequestManager = new WsTrustWebRequestManager(HttpManager);
             AuthorityEndpointResolutionManager = new AuthorityEndpointResolutionManager(this, shouldClearCaches);
         }
 
@@ -59,10 +59,6 @@ namespace Microsoft.Identity.Client.Core
 
         public IInstanceDiscoveryManager InstanceDiscoveryManager { get; }
 
-        /// <inheritdoc />
-        public IWsTrustWebRequestManager WsTrustWebRequestManager { get; }
-
-        /// <inheritdoc />
         public IAuthorityEndpointResolutionManager AuthorityEndpointResolutionManager { get; }
 
         /// <inheritdoc />
@@ -77,6 +73,39 @@ namespace Microsoft.Identity.Client.Core
         public static ServiceBundle Create(ApplicationConfiguration config)
         {
             return new ServiceBundle(config);
+        }
+
+        private readonly IDictionary<Type, object> _dependencyImplementations = new Dictionary<Type, object>();
+
+        /// <summary>
+        /// Acts like a local Service Locator, i.e. registers an object to a type. Allows PCA and CCA to register
+        /// their own types while still keeping the code in the Shared project.
+        /// </summary>
+        public void Register<T>(T implementation) where T : class 
+        {
+
+             Type targetType = typeof(T);
+
+
+            if (_dependencyImplementations.ContainsKey(targetType))
+                throw new InvalidOperationException("Do not register multiple  implementations in the service bundle");
+
+
+            _dependencyImplementations[targetType] = implementation;
+        }
+
+        /// <summary>
+        /// Acts like a Service Locator - returns an object based on its type. The object must have been 
+        /// registered with <see cref="Register{T}(T)"/>
+        /// </summary>
+        public T Get<T>() where T : class
+        {
+            Type targetType = typeof(T);
+
+            if (!_dependencyImplementations.ContainsKey(targetType))
+                throw new InvalidOperationException($"Type {targetType} not registered");
+
+            return _dependencyImplementations[targetType] as T;
         }
     }
 }

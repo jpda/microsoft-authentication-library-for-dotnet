@@ -6,7 +6,6 @@ using Microsoft.Identity.Client.Instance;
 using Microsoft.Identity.Client.Instance.Discovery;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.TelemetryCore;
-using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.Core
 {
@@ -18,8 +17,11 @@ namespace Microsoft.Identity.Client.Core
         ITelemetryManager TelemetryManager { get; }
         IInstanceDiscoveryManager InstanceDiscoveryManager { get; }
         IPlatformProxy PlatformProxy { get; }
-        IWsTrustWebRequestManager WsTrustWebRequestManager { get; }
+
         IAuthorityEndpointResolutionManager AuthorityEndpointResolutionManager { get; }
         ITelemetryClient Mats { get; }
+
+        T Get<T>() where T : class;
+        void Register<T>(T implementation) where T : class;
     }
 }
