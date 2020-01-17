@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security;
 using Microsoft.Identity.Client.ApiConfig.Executors;
+using Microsoft.Identity.Client.Core;
+using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client
 {
@@ -28,6 +30,8 @@ namespace Microsoft.Identity.Client
         internal PublicClientApplication(ApplicationConfiguration configuration)
             : base(configuration)
         {
+            // Register PCA specific objects
+            ServiceBundle.Register(new WsTrustWebRequestManager(ServiceBundle.HttpManager);)
         }
 
         /// <summary>

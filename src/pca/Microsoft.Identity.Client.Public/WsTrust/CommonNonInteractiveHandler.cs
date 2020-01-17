@@ -44,7 +44,7 @@ namespace Microsoft.Identity.Client.WsTrust
 
         public async Task<UserRealmDiscoveryResponse> QueryUserRealmDataAsync(string userRealmUriPrefix, string username)
         {
-            var userRealmResponse = await _serviceBundle.WsTrustWebRequestManager.GetUserRealmAsync(
+            var userRealmResponse = await _serviceBundle.GetWsTrustWebRequestManager().GetUserRealmAsync(
                 userRealmUriPrefix,
                 username,
                 _requestContext).ConfigureAwait(false);
@@ -70,7 +70,7 @@ namespace Microsoft.Identity.Client.WsTrust
 
             try
             {
-                mexDocument = await _serviceBundle.WsTrustWebRequestManager.GetMexDocumentAsync(
+                mexDocument = await _serviceBundle.GetWsTrustWebRequestManager().GetMexDocumentAsync(
                 federationMetadataUrl, _requestContext).ConfigureAwait(false);
             }
             catch (XmlException ex)
@@ -124,8 +124,11 @@ namespace Microsoft.Identity.Client.WsTrust
 
             try
             {
-                WsTrustResponse wsTrustResponse = await _serviceBundle.WsTrustWebRequestManager.GetWsTrustResponseAsync(
-                    endpoint, wsTrustRequestMessage, _requestContext).ConfigureAwait(false);
+                WsTrustResponse wsTrustResponse = await _serviceBundle.GetWsTrustWebRequestManager()
+                    .GetWsTrustResponseAsync(
+                        endpoint, 
+                        wsTrustRequestMessage, 
+                        _requestContext).ConfigureAwait(false);
 
                 _requestContext.Logger.Info($"Token of type '{wsTrustResponse.TokenType}' acquired from WS-Trust endpoint");
                 return wsTrustResponse;
