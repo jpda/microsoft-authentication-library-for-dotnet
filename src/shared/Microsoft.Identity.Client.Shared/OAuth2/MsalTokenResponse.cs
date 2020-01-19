@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Identity.Client.Utils;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Microsoft.Identity.Client.Internal.Broker;
 using Microsoft.Identity.Json;
 
 namespace Microsoft.Identity.Client.OAuth2
