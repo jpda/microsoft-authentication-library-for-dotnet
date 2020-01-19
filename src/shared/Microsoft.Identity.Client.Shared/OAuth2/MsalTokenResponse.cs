@@ -97,49 +97,7 @@ namespace Microsoft.Identity.Client.OAuth2
 
         public DateTimeOffset? AccessTokenRefreshOn { get; private set; }
 
-        public string Authority { get; private set; }
+        public string Authority { get; set; }
 
-        internal static MsalTokenResponse CreateFromBrokerResponse(Dictionary<string, string> responseDictionary)
-        {
-            if (responseDictionary.ContainsKey(BrokerResponseConst.BrokerErrorCode) ||
-                responseDictionary.ContainsKey(BrokerResponseConst.BrokerErrorDescription))
-            {
-                return new MsalTokenResponse
-                {
-                    Error = responseDictionary[BrokerResponseConst.BrokerErrorCode],
-                    ErrorDescription = CoreHelpers.UrlDecode(responseDictionary[BrokerResponseConst.BrokerErrorDescription])
-                };
-            }
-
-            var response =  new MsalTokenResponse
-            {
-                Authority = responseDictionary.ContainsKey(BrokerResponseConst.Authority)
-                    ? AuthorityInfo.CanonicalizeAuthorityUri(CoreHelpers.UrlDecode(responseDictionary[BrokerResponseConst.Authority]))
-                    : null,
-                AccessToken = responseDictionary[BrokerResponseConst.AccessToken],
-                RefreshToken = responseDictionary.ContainsKey(BrokerResponseConst.RefreshToken)
-                    ? responseDictionary[BrokerResponseConst.RefreshToken]
-                    : null,
-                IdToken = responseDictionary[BrokerResponseConst.IdToken],
-                TokenType = BrokerResponseConst.Bearer,
-                CorrelationId = responseDictionary[BrokerResponseConst.CorrelationId],
-                Scope = responseDictionary[BrokerResponseConst.Scope],
-                ExpiresIn = responseDictionary.ContainsKey(BrokerResponseConst.ExpiresOn)
-                    ? long.Parse(responseDictionary[BrokerResponseConst.ExpiresOn].Split('.')[0], CultureInfo.InvariantCulture)
-                    : Convert.ToInt64(DateTime.UtcNow, CultureInfo.InvariantCulture),
-                ClientInfo = responseDictionary.ContainsKey(BrokerResponseConst.ClientInfo)
-                    ? responseDictionary[BrokerResponseConst.ClientInfo]
-                    : null,
-            };
-
-            if (responseDictionary.ContainsKey(TokenResponseClaim.RefreshIn))
-            {
-                response.RefreshIn = long.Parse(
-                    responseDictionary[TokenResponseClaim.RefreshIn], 
-                    CultureInfo.InvariantCulture);
-            }
-
-            return response;
-        }
     }
 }

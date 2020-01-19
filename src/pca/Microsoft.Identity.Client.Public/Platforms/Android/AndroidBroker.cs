@@ -3,11 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Accounts;
 using Android.App;
 using Android.Content;
 using AndroidNative = Android;
@@ -15,11 +12,7 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Internal.Broker;
 using Microsoft.Identity.Client.OAuth2;
 using Microsoft.Identity.Client.UI;
-using Microsoft.Identity.Client.Utils;
-using System.Globalization;
 using Microsoft.Identity.Json.Linq;
-using Microsoft.Identity.Json;
-using Android.OS;
 
 namespace Microsoft.Identity.Client.Platforms.Android
 {
@@ -167,7 +160,7 @@ namespace Microsoft.Identity.Client.Platforms.Android
             response.Add(BrokerResponseConst.ExpiresOn, authResult[BrokerResponseConst.ExpiresOn].ToString());
             response.Add(BrokerResponseConst.ClientInfo, authResult[BrokerResponseConst.ClientInfo].ToString());
 
-            return MsalTokenResponse.CreateFromBrokerResponse(response);
+            return BrokerResponseConst.CreateFromBrokerResponse(response);
         }
     }
 }

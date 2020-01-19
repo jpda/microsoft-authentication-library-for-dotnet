@@ -216,7 +216,7 @@ namespace Microsoft.Identity.Client.Platforms.iOS
                         responseDictionary[iOSBrokerConstants.ApplicationToken]);
                 }
 
-                brokerTokenResponse = MsalTokenResponse.CreateFromBrokerResponse(responseDictionary);
+                brokerTokenResponse = BrokerResponseConst.CreateFromBrokerResponse(responseDictionary);
             }
             else
             {
