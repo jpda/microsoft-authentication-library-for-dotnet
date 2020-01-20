@@ -7,6 +7,10 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Microsoft.Identity.Client
 {
+    
+
+
+
     /// <summary>
     /// Configuration properties used to build a public or confidential client application
     /// </summary>

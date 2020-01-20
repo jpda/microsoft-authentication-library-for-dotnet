@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Text;
+using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 
-namespace Microsoft.Identity.Client.ApiConfig.Parameters
+namespace Microsoft.Identity.Client.Shared.ApiConfig.Parameters
 {
     internal class AcquireTokenByRefreshTokenParameters : IAcquireTokenParameters
     {

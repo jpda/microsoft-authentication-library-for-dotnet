@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client.ApiConfig.Executors;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 
 namespace Microsoft.Identity.Client
 {

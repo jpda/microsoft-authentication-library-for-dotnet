@@ -14,9 +14,9 @@ using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Utils;
 using Microsoft.Identity.Client.PlatformsCommon.Factories;
-using Microsoft.Identity.Client.ApiConfig.Executors;
 using Microsoft.Identity.Client.Cache;
 using Microsoft.Identity.Client.Shared.Requests;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 
 namespace Microsoft.Identity.Client
 {

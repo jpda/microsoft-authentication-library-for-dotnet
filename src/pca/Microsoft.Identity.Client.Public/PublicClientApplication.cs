@@ -10,6 +10,7 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.WsTrust;
 using Microsoft.Identity.Client.Public.PlatformsCommon;
 using Microsoft.Identity.Client.PlatformsCommon;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 
 namespace Microsoft.Identity.Client
 {

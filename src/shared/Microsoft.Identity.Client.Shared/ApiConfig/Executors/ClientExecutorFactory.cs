@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace Microsoft.Identity.Client.ApiConfig.Executors
+namespace Microsoft.Identity.Client.Shared.ApiConfig.Executors
 {
     internal static class ClientExecutorFactory
     {
