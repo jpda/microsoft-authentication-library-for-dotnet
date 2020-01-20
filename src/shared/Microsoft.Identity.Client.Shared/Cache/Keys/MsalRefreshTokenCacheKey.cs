@@ -13,7 +13,7 @@ namespace Microsoft.Identity.Client.Cache.Keys
     /// Normal RTs are scoped by env, account_id and clientID
     /// FRTs are scoped by env, account_id and familyID (clientID exists, but is irrelevant)
     /// </remarks>
-    internal class MsalRefreshTokenCacheKey : IiOSKey //TODO bogavril: add a base class with FRT key?
+    internal class MsalRefreshTokenCacheKey : IiOSKey 
     {
         private readonly string _environment;
         private readonly string _homeAccountId;
