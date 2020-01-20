@@ -58,7 +58,6 @@ namespace Microsoft.Identity.Client.Platforms.iOS
         public const string BrokerResponseValuesPii = "iOS Broker Response Values: ";
         public const string AttemptToSaveBrokerApplicationToken = "Attempt to save iOS broker application token resulted in: ";
         public const string SecStatusCodeFromTryGetBrokerApplicationToken = "The SecStatusCode from trying to get the broker application token is: ";
-        public const string iOSBroker = "iOS_broker";
         public const string ApplicationToken = "application_token"; // included in request and response with v3 iOS broker
     }
 }

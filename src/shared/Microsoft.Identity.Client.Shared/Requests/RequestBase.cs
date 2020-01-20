@@ -20,6 +20,7 @@ using Microsoft.Identity.Client.Instance.Discovery;
 using Microsoft.Identity.Json.Linq;
 using System.Text;
 using Microsoft.Identity.Json;
+using Microsoft.Identity.Client.Shared.Requests;
 
 namespace Microsoft.Identity.Client.Internal.Requests
 {
@@ -296,23 +297,24 @@ namespace Microsoft.Identity.Client.Internal.Requests
             client.AddBodyParameter(OAuth2Parameter.ClientInfo, "1");
 
 
-#if DESKTOP || NETSTANDARD1_3 || NET_CORE
-            if (AuthenticationRequestParameters.ClientCredential != null)
-            {
-                Dictionary<string, string> ccBodyParameters = ClientCredentialHelper.CreateClientCredentialBodyParameters(
-                    AuthenticationRequestParameters.RequestContext.Logger,
-                    ServiceBundle.PlatformProxy.CryptographyManager,
-                    AuthenticationRequestParameters.ClientCredential,
-                    AuthenticationRequestParameters.ClientId,
-                    AuthenticationRequestParameters.Endpoints,
-                    AuthenticationRequestParameters.SendX5C);
+            //TODO - sep: CCA flow
+//#if DESKTOP || NETSTANDARD1_3 || NET_CORE
+//            if (AuthenticationRequestParameters.ClientCredential != null)
+//            {
+//                Dictionary<string, string> ccBodyParameters = ClientCredentialHelper.CreateClientCredentialBodyParameters(
+//                    AuthenticationRequestParameters.RequestContext.Logger,
+//                    ServiceBundle.PlatformProxy.CryptographyManager,
+//                    AuthenticationRequestParameters.ClientCredential,
+//                    AuthenticationRequestParameters.ClientId,
+//                    AuthenticationRequestParameters.Endpoints,
+//                    AuthenticationRequestParameters.SendX5C);
 
-                foreach (var entry in ccBodyParameters)
-                {
-                    client.AddBodyParameter(entry.Key, entry.Value);
-                }
-            }
-#endif
+//                foreach (var entry in ccBodyParameters)
+//                {
+//                    client.AddBodyParameter(entry.Key, entry.Value);
+//                }
+//            }
+//#endif
 
             client.AddBodyParameter(OAuth2Parameter.Scope,
                 GetDecoratedScope(AuthenticationRequestParameters.Scope).AsSingleString());

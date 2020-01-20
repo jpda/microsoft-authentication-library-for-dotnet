@@ -5,18 +5,4 @@
   <ItemGroup>
     <ReferenceAssemblyProjectReference Include="..\Microsoft.Identity.Client.Public.Ref\Microsoft.Identity.Client.Public.Ref.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Platforms\net45\NetDesktopPcaPlatformProxy.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Internal\Broker\BrokerResponse.cs" />
-    <Compile Include="Platforms\net45\NetDesktopPcaPlatformProxy.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Internal\Broker\BrokerResponse.cs" />
-  </ItemGroup>
-
 </Project>

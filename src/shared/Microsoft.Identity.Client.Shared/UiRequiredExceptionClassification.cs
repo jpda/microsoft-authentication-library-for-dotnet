@@ -48,8 +48,8 @@ namespace Microsoft.Identity.Client
         UserPasswordExpired,
 
         /// <summary>
-        /// <see cref="AcquireTokenInteractiveParameterBuilder.WithPrompt(Prompt)"/> was used with Prompt.Never value, 
-        /// however this could not be honored by the server. Please use a different prompt behavior, such as <see cref="Prompt.SelectAccount"/>
+        /// AcquireTokenInteractiveParameterBuilder.WithPrompt(Prompt) was used with Prompt.Never value, 
+        /// however this could not be honored by the server. Please use a different prompt behavior, such as Prompt.SelectAccount
         /// See https://aka.ms/msal-net-UiRequiredException for details.
         /// </summary>
         PromptNeverFailed,

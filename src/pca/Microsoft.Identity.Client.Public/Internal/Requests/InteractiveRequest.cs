@@ -17,6 +17,7 @@ using Microsoft.Identity.Client.UI;
 using Microsoft.Identity.Client.Utils;
 using Microsoft.Identity.Client.TelemetryCore.Internal;
 using Microsoft.Identity.Client.TelemetryCore;
+using Microsoft.Identity.Client.Shared.Requests;
 
 namespace Microsoft.Identity.Client.Internal.Requests
 {

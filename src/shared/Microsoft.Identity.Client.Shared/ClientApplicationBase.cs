@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.Internal;
-using Microsoft.Identity.Client.Internal.Requests;
 using System.Linq;
 using Microsoft.Identity.Client.Instance;
 using Microsoft.Identity.Client.TelemetryCore;
@@ -17,6 +16,7 @@ using Microsoft.Identity.Client.Utils;
 using Microsoft.Identity.Client.PlatformsCommon.Factories;
 using Microsoft.Identity.Client.ApiConfig.Executors;
 using Microsoft.Identity.Client.Cache;
+using Microsoft.Identity.Client.Shared.Requests;
 
 namespace Microsoft.Identity.Client
 {
@@ -24,7 +24,7 @@ namespace Microsoft.Identity.Client
 #pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
 #endif
     /// <Summary>
-    /// Abstract class containing common API methods and properties. Both <see cref="Microsoft.Identity.Client.PublicClientApplication"/> and <see cref="Microsoft.Identity.Client.ConfidentialClientApplication"/>
+    /// Abstract class containing common API methods and properties. Microsoft.Identity.Client.PublicClientApplication and Microsoft.Identity.Client.ConfidentialClientApplication
     /// extend this class. For details see https://aka.ms/msal-net-client-applications
     /// </Summary>
     public abstract partial class ClientApplicationBase : IClientApplicationBase

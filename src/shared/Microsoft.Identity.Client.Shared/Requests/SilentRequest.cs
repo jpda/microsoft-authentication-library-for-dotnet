@@ -12,6 +12,7 @@ using Microsoft.Identity.Client.TelemetryCore.Internal.Events;
 using System.Linq;
 using System;
 using Microsoft.Identity.Client.Instance;
+using Microsoft.Identity.Client.Shared.Requests;
 
 namespace Microsoft.Identity.Client.Internal.Requests
 {

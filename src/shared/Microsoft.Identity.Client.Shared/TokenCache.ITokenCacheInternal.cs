@@ -13,8 +13,8 @@ using Microsoft.Identity.Client.Cache.Keys;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Instance;
 using Microsoft.Identity.Client.Instance.Discovery;
-using Microsoft.Identity.Client.Internal.Requests;
 using Microsoft.Identity.Client.OAuth2;
+using Microsoft.Identity.Client.Shared.Requests;
 using Microsoft.Identity.Client.Utils;
 
 namespace Microsoft.Identity.Client

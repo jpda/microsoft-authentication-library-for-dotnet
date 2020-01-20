@@ -70,7 +70,7 @@ namespace Microsoft.Identity.Client.Internal
 
         private ClientCredentialWrapper(X509Certificate2 certificate, IDictionary<string, string> claimsToSign = null)
         {
-            ConfidentialClientApplication.GuardMobileFrameworks();
+           // ConfidentialClientApplication.GuardMobileFrameworks();
 
             Certificate = certificate;
 
@@ -86,7 +86,7 @@ namespace Microsoft.Identity.Client.Internal
 
         private ClientCredentialWrapper(string secretOrAssertion, ConfidentialClientAuthenticationType authType)
         {
-            ConfidentialClientApplication.GuardMobileFrameworks();
+           // ConfidentialClientApplication.GuardMobileFrameworks();
 
             if (authType == ConfidentialClientAuthenticationType.SignedClientAssertion)
             {

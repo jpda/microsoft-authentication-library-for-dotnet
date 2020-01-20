@@ -24,6 +24,7 @@ namespace Microsoft.Identity.Client.Platforms.iOS
         // Identifier for the keychain item used to retrieve current team ID
         private const string TeamIdKey = "DotNetTeamIDHint";
         private const string DefaultKeychainAccessGroup = "com.microsoft.adalcache";
+        private const string iOSBroker = "iOS_broker";
 
         private string _keychainGroup;
         private readonly RequestContext _requestContext;
@@ -152,7 +153,7 @@ namespace Microsoft.Identity.Client.Platforms.iOS
             {
                 AccessGroup = _keychainGroup,
                 Account = clientId,
-                Service = iOSBrokerConstants.iOSBroker,
+                Service = iOSBroker,
             };
 
             SecRecord record = SecKeyChain.QueryAsRecord(queryRecord, out SecStatusCode resultCode);
@@ -254,7 +255,7 @@ namespace Microsoft.Identity.Client.Platforms.iOS
             var recordToSave = new SecRecord(SecKind.GenericPassword)
             {
                 Account = clientIdAsKey,
-                Service = iOSBrokerConstants.iOSBroker,
+                Service = iOSBroker,
                 ValueData = NSData.FromString(applicationToken, NSStringEncoding.UTF8),
                 AccessGroup = _keychainGroup,
                 Accessible = _defaultAccessiblityPolicy,
