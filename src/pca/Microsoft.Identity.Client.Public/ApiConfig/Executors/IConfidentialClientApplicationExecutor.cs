@@ -14,6 +14,11 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
         IServiceBundle ServiceBundle { get; }
 
         Task<AuthenticationResult> ExecuteAsync(
+           AcquireTokenCommonParameters commonParameters,
+           AcquireTokenSilentParameters silentParameters,
+           CancellationToken cancellationToken);
+
+        Task<AuthenticationResult> ExecuteAsync(
             AcquireTokenCommonParameters commonParameters,
             AcquireTokenByAuthorizationCodeParameters authorizationCodeParameters,
             CancellationToken cancellationToken);

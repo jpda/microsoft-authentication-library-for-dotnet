@@ -24,6 +24,24 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
 
         public async Task<AuthenticationResult> ExecuteAsync(
             AcquireTokenCommonParameters commonParameters,
+            AcquireTokenSilentParameters silentParameters,
+            CancellationToken cancellationToken)
+        {
+            var requestContext = CreateRequestContextAndLogVersionInfo(commonParameters.CorrelationId);
+
+            var requestParameters = _confidentialClientApplication.CreateRequestParameters(
+                commonParameters,
+                requestContext,
+                _confidentialClientApplication.UserTokenCacheInternal);
+
+            requestParameters.SendX5C = silentParameters.SendX5C;
+
+            var handler = new SilentRequest(ServiceBundle, requestParameters, silentParameters);
+            return await handler.RunAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<AuthenticationResult> ExecuteAsync(
+            AcquireTokenCommonParameters commonParameters,
             AcquireTokenByAuthorizationCodeParameters authorizationCodeParameters,
             CancellationToken cancellationToken)
         {

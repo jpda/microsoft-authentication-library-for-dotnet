@@ -15,11 +15,6 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
 
         Task<AuthenticationResult> ExecuteAsync(
             AcquireTokenCommonParameters commonParameters,
-            AcquireTokenSilentParameters silentParameters,
-            CancellationToken cancellationToken);
-
-        Task<AuthenticationResult> ExecuteAsync(
-            AcquireTokenCommonParameters commonParameters,
             AcquireTokenByRefreshTokenParameters byRefreshTokenParameters,
             CancellationToken cancellationToken);
     }

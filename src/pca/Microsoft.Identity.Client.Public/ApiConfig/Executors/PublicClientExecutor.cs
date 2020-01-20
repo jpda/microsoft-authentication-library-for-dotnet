@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
+using Microsoft.Identity.Client.Internal.Broker;
 using Microsoft.Identity.Client.Internal.Requests;
 using Microsoft.Identity.Client.UI;
+using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.ApiConfig.Executors
 {
@@ -19,6 +21,31 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             : base(serviceBundle, publicClientApplication)
         {
             _publicClientApplication = publicClientApplication;
+        }
+
+        public async Task<AuthenticationResult> ExecuteAsync(
+          AcquireTokenCommonParameters commonParameters,
+          AcquireTokenSilentParameters silentParameters,
+          CancellationToken cancellationToken)
+        {
+            var requestContext = CreateRequestContextAndLogVersionInfo(commonParameters.CorrelationId);
+
+            var requestParameters = _publicClientApplication.CreateRequestParameters(
+                commonParameters,
+                requestContext,
+                _publicClientApplication.UserTokenCacheInternal);
+
+            RequestBase handler;
+            if (requestParameters.IsBrokerEnabled && ServiceBundle.GetPcaPlatformProxy().CanBrokerSupportSilentAuth())
+            {
+                handler = new BrokerSilentRequest(ServiceBundle, requestParameters, silentParameters);
+            }
+            else
+            {
+                handler = new SilentRequest(ServiceBundle, requestParameters, silentParameters);
+            }
+
+            return await handler.RunAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<AuthenticationResult> ExecuteAsync(
@@ -127,7 +154,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
 
             coreUiParent.UseEmbeddedWebview = GetUseEmbeddedWebview(
                 interactiveParameters.UseEmbeddedWebView,
-                requestContext.ServiceBundle.PlatformProxy.UseEmbeddedWebViewDefault);
+                requestContext.ServiceBundle.GetPcaPlatformProxy().UseEmbeddedWebViewDefault);
 
 #if WINDOWS_APP || DESKTOP
             // hidden web view can be used in both WinRT and desktop applications.
@@ -136,7 +163,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             coreUiParent.UseCorporateNetwork = _publicClientApplication.AppConfig.UseCorporateNetwork;
 #endif
 #endif
-            return ServiceBundle.PlatformProxy.GetWebUiFactory().CreateAuthenticationDialog(
+            return ServiceBundle.GetPcaPlatformProxy().GetWebUiFactory().CreateAuthenticationDialog(
                 coreUiParent,
                 requestContext);
         }
