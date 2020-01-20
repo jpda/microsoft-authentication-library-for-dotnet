@@ -5,14 +5,14 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Instance;
+using Microsoft.Identity.Client.Internal;
 using Microsoft.Identity.Client.OAuth2;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 
-namespace Microsoft.Identity.Client.Internal.Requests
+namespace Microsoft.Identity.Client.Confidential.Requests
 {
     internal static class ClientCredentialHelper
     {
-#if !ANDROID_BUILDTIME && !iOS_BUILDTIME && !WINDOWS_APP_BUILDTIME && !MAC_BUILDTIME // Hide confidential client on mobile platforms
         /// <summary>
         ///     Determines whether or not the cached client assertion can be used again for the next authentication request by
         ///     checking it's
@@ -65,9 +65,9 @@ namespace Microsoft.Identity.Client.Internal.Requests
                         if (!ValidateClientAssertion(clientCredential, endpoints.SelfSignedJwtAudience, sendX5C))
                         {
                             logger.Info(LogMessages.ClientAssertionDoesNotExistOrNearExpiry);
-                           
+
                             JsonWebToken jwtToken;
-                            
+
                             if (clientCredential.AuthenticationType == ConfidentialClientAuthenticationType.ClientCertificateWithClaims)
                             {
                                 jwtToken = new JsonWebToken(cryptographyManager, clientId, endpoints.SelfSignedJwtAudience, clientCredential.ClaimsToSign, clientCredential.AppendDefaultClaims);
@@ -89,7 +89,7 @@ namespace Microsoft.Identity.Client.Internal.Requests
                     }
 
                     parameters[OAuth2Parameter.ClientAssertionType] = OAuth2AssertionType.JwtBearer;
-                    
+
                     if (clientCredential.AuthenticationType == ConfidentialClientAuthenticationType.SignedClientAssertion)
                     {
                         parameters[OAuth2Parameter.ClientAssertion] = clientCredential.SignedAssertion;
@@ -102,6 +102,5 @@ namespace Microsoft.Identity.Client.Internal.Requests
             }
             return parameters;
         }
-#endif
     }
 }

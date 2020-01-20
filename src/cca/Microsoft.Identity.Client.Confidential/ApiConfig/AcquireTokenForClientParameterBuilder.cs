@@ -4,14 +4,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client.ApiConfig.Executors;
-using Microsoft.Identity.Client.ApiConfig.Parameters;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Executors;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Parameters;
 using Microsoft.Identity.Client.TelemetryCore.Internal.Events;
 
 namespace Microsoft.Identity.Client
 {
-#if !ANDROID_BUILDTIME && !iOS_BUILDTIME && !WINDOWS_APP_BUILDTIME && !MAC_BUILDTIME // Hide confidential client on mobile platforms
-
     /// <summary>
     /// Builder for AcquireTokenForClient (used in client credential flows, in daemon applications).
     /// See https://aka.ms/msal-net-client-credentials
@@ -81,5 +79,4 @@ namespace Microsoft.Identity.Client
             return ApiEvent.ApiIds.AcquireTokenForClient;
         }
     }
-#endif
 }

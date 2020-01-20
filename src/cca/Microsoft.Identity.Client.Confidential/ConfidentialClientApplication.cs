@@ -13,13 +13,12 @@ using Microsoft.Identity.Client.ApiConfig;
 using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Http;
-using Microsoft.Identity.Client.ApiConfig.Executors;
 using Microsoft.Identity.Client.Shared.Requests;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Executors;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 
 namespace Microsoft.Identity.Client
 {
-#if !ANDROID_BUILDTIME && !iOS_BUILDTIME && !WINDOWS_APP_BUILDTIME && !MAC_BUILDTIME // Hide confidential client on mobile platforms
-
     /// <summary>
     /// Class to be used for confidential client applications (Web Apps, Web APIs, and daemon applications).
     /// </summary>
@@ -198,6 +197,4 @@ namespace Microsoft.Identity.Client
             return clientApplicationBase.ServiceBundle.Mats != null;
         }
     }
-
-#endif
 }

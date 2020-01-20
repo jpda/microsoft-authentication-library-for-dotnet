@@ -5,13 +5,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.ApiConfig.Parameters;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Parameters;
+using Microsoft.Identity.Client.Confidential.Requests;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Internal.Requests;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 
-namespace Microsoft.Identity.Client.ApiConfig.Executors
+namespace Microsoft.Identity.Client.Confidential.ApiConfig.Executors
 {
-#if !ANDROID_BUILDTIME && !iOS_BUILDTIME && !WINDOWS_APP_BUILDTIME && !MAC_BUILDTIME // Hide confidential client on mobile platforms
-
     internal class ConfidentialClientExecutor : AbstractExecutor, IConfidentialClientApplicationExecutor
     {
         private readonly ConfidentialClientApplication _confidentialClientApplication;
@@ -56,7 +57,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             var handler = new AuthorizationCodeRequest(
                 ServiceBundle,
                 requestParams,
-                authorizationCodeParameters); 
+                authorizationCodeParameters);
             return await handler.RunAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -126,7 +127,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
                 requestParameters.RedirectUri = new Uri(authorizationRequestUrlParameters.RedirectUri);
             }
 
-            var handler = new InteractiveRequest(
+            var handler = new InteractiveRequest( // TODO sep - this isn't really an Interactive request, why don't we just make it shared smth?
                 ServiceBundle,
                 requestParameters,
                 authorizationRequestUrlParameters.ToInteractiveParameters(),
@@ -136,5 +137,4 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             return await handler.CreateAuthorizationUriAsync().ConfigureAwait(false);
         }
     }
-#endif
 }

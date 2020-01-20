@@ -4,12 +4,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client.ApiConfig.Executors;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Executors;
 
 namespace Microsoft.Identity.Client
 {
-#if !ANDROID_BUILDTIME && !iOS_BUILDTIME && !WINDOWS_APP_BUILDTIME && !MAC_BUILDTIME // Hide confidential client on mobile platforms
-
     /// <summary>
     /// Base class for confidential client application token request builders
     /// </summary>
@@ -34,5 +32,4 @@ namespace Microsoft.Identity.Client
 
         internal IConfidentialClientApplicationExecutor ConfidentialClientApplicationExecutor { get; }
     }
-#endif
 }

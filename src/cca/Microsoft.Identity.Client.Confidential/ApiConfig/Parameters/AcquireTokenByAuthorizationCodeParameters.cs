@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using System.Text;
+using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 
-namespace Microsoft.Identity.Client.ApiConfig.Parameters
+namespace Microsoft.Identity.Client.Confidential.ApiConfig.Parameters
 {
     internal class AcquireTokenByAuthorizationCodeParameters : IAcquireTokenParameters
     {

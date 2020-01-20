@@ -5,10 +5,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.ApiConfig.Parameters;
+using Microsoft.Identity.Client.Confidential.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
+using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 using Microsoft.Identity.Client.TelemetryCore;
 
-namespace Microsoft.Identity.Client.ApiConfig.Executors
+namespace Microsoft.Identity.Client.Confidential.ApiConfig.Executors
 {
     internal class TelemetryConfidentialClientExecutor : AbstractMatsExecutor, IConfidentialClientApplicationExecutor
     {
@@ -60,6 +62,16 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             return ExecuteMatsToUriAsync(
                 commonParameters,
                 async () => await _executor.ExecuteAsync(commonParameters, authorizationRequestUrlParameters, cancellationToken).ConfigureAwait(false));
+        }
+
+        public Task<AuthenticationResult> ExecuteAsync(
+            AcquireTokenCommonParameters commonParameters, 
+            AcquireTokenSilentParameters silentParameters, 
+            CancellationToken cancellationToken)
+        {
+            return ExecuteMatsAsync(
+                commonParameters,
+                async () => await _executor.ExecuteAsync(commonParameters, silentParameters, cancellationToken).ConfigureAwait(false));
         }
     }
 }

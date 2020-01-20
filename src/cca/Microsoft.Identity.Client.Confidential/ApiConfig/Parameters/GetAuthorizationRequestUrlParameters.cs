@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Utils;
 
-namespace Microsoft.Identity.Client.ApiConfig.Parameters
+namespace Microsoft.Identity.Client.Confidential.ApiConfig.Parameters
 {
     internal class GetAuthorizationRequestUrlParameters : IAcquireTokenParameters
     {

@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 
 using System.Text;
+using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
 
-namespace Microsoft.Identity.Client.ApiConfig.Parameters
+namespace Microsoft.Identity.Client.Confidential.ApiConfig.Parameters
 {
     internal class AcquireTokenOnBehalfOfParameters : IAcquireTokenParameters
     {
         public UserAssertion UserAssertion { get; set; }
-        public bool SendX5C { get; set;}
+        public bool SendX5C { get; set; }
 
         /// <inheritdoc />
         public void LogParameters(ICoreLogger logger)
