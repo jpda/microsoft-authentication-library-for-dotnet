@@ -16,7 +16,7 @@ using Microsoft.Identity.Client.Shared.Requests;
 
 namespace Microsoft.Identity.Client.Internal.Requests
 {
-    internal class SilentRequest : RequestBase //TODO - sep: refactor broker stuff
+    internal class SilentRequest : RequestBase 
     {
         private readonly AcquireTokenSilentParameters _silentParameters;
         private const string TheOnlyFamilyId = "1";

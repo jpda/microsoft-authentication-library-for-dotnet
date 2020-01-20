@@ -18,6 +18,7 @@ using Microsoft.Identity.Client.Utils;
 using Microsoft.Identity.Client.TelemetryCore.Internal;
 using Microsoft.Identity.Client.TelemetryCore;
 using Microsoft.Identity.Client.Shared.Requests;
+using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.Internal.Requests
 {
@@ -287,7 +288,7 @@ namespace Microsoft.Identity.Client.Internal.Requests
 
         private async Task<MsalTokenResponse> ExecuteBrokerAsync(CancellationToken cancellationToken)
         {
-            IBroker broker = base.ServiceBundle.PlatformProxy.CreateBroker(_interactiveParameters.UiParent);
+            IBroker broker = base.ServiceBundle.GetPcaPlatformProxy().CreateBroker(_interactiveParameters.UiParent);
 
             var brokerInteractiveRequest = new BrokerInteractiveRequest(
                 AuthenticationRequestParameters,
