@@ -33,9 +33,9 @@ namespace Microsoft.Identity.Client
             : base(configuration)
         {
             // Register PCA specific objects
-            ServiceBundle.Register<IWsTrustWebRequestManager>(new WsTrustWebRequestManager(ServiceBundle.HttpManager);
+            ServiceBundle.Register<IWsTrustWebRequestManager>(new WsTrustWebRequestManager(ServiceBundle.HttpManager));
 
-            // TODO: allow injection of a test platform proxy
+            // TODO sep: allow injection of a test platform proxy
             IPcaPlatformProxy pcaPlatformProxy = 
                 PcaPlatformProxyFactory.CreatePcaPlatformProxy(ServiceBundle.DefaultLogger);
             ServiceBundle.Register<IPcaPlatformProxy>(pcaPlatformProxy);
@@ -46,7 +46,7 @@ namespace Microsoft.Identity.Client
         /// </summary>
         public bool IsSystemWebViewAvailable
         {
-            get => ServiceBundle.PlatformProxy.IsSystemWebViewAvailable;
+            get => ServiceBundle.GetPcaPlatformProxy().IsSystemWebViewAvailable;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Microsoft.Identity.Client
             IEnumerable<string> scopes)
         {
             return AcquireTokenInteractiveParameterBuilder
-                .Create(ClientExecutorFactory.CreatePublicClientExecutor(this), scopes)
+                .Create(CreatePublicClientExecutor(this), scopes)
                 .WithParentActivityOrWindowFunc(ServiceBundle.Config.ParentActivityOrWindowFunc);
         }
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
@@ -110,7 +110,7 @@ namespace Microsoft.Identity.Client
             Func<DeviceCodeResult, Task> deviceCodeResultCallback)
         {
             return AcquireTokenWithDeviceCodeParameterBuilder.Create(
-                ClientExecutorFactory.CreatePublicClientExecutor(this),
+                CreatePublicClientExecutor(this),
                 scopes,
                 deviceCodeResultCallback);
         }
@@ -149,7 +149,7 @@ namespace Microsoft.Identity.Client
             IEnumerable<string> scopes)
         {
             return AcquireTokenByIntegratedWindowsAuthParameterBuilder.Create(
-                ClientExecutorFactory.CreatePublicClientExecutor(this),
+                CreatePublicClientExecutor(this),
                 scopes);
         }
 
@@ -174,10 +174,29 @@ namespace Microsoft.Identity.Client
             SecureString password)
         {
             return AcquireTokenByUsernamePasswordParameterBuilder.Create(
-                ClientExecutorFactory.CreatePublicClientExecutor(this),
+                CreatePublicClientExecutor(this),
                 scopes,
                 username,
                 password);
+        }
+
+        private static IPublicClientApplicationExecutor CreatePublicClientExecutor(PublicClientApplication publicClientApplication)
+        {
+            IPublicClientApplicationExecutor executor = new PublicClientExecutor(
+                publicClientApplication.ServiceBundle,
+                publicClientApplication);
+
+            if (IsMatsEnabled(publicClientApplication))
+            {
+                executor = new TelemetryPublicClientExecutor(executor, publicClientApplication.ServiceBundle.Mats);
+            }
+
+            return executor;
+        }
+
+        private static bool IsMatsEnabled(ClientApplicationBase clientApplicationBase)
+        {
+            return clientApplicationBase.ServiceBundle.Mats != null;
         }
     }
 }

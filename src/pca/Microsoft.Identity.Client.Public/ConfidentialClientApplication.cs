@@ -64,7 +64,7 @@ namespace Microsoft.Identity.Client
             string authorizationCode)
         {
             return AcquireTokenByAuthorizationCodeParameterBuilder.Create(
-                ClientExecutorFactory.CreateConfidentialClientExecutor(this),
+                CreateConfidentialClientExecutor(this),
                 scopes,
                 authorizationCode);
         }
@@ -86,7 +86,7 @@ namespace Microsoft.Identity.Client
             IEnumerable<string> scopes)
         {
             return AcquireTokenForClientParameterBuilder.Create(
-                ClientExecutorFactory.CreateConfidentialClientExecutor(this),
+                CreateConfidentialClientExecutor(this),
                 scopes);
         }
 
@@ -109,7 +109,7 @@ namespace Microsoft.Identity.Client
             UserAssertion userAssertion)
         {
             return AcquireTokenOnBehalfOfParameterBuilder.Create(
-                ClientExecutorFactory.CreateConfidentialClientExecutor(this),
+                CreateConfidentialClientExecutor(this),
                 scopes,
                 userAssertion);
         }
@@ -132,7 +132,7 @@ namespace Microsoft.Identity.Client
             IEnumerable<string> scopes)
         {
             return GetAuthorizationRequestUrlParameterBuilder.Create(
-                ClientExecutorFactory.CreateConfidentialClientExecutor(this),
+                CreateConfidentialClientExecutor(this),
                 scopes);
         }
 
@@ -176,6 +176,26 @@ namespace Microsoft.Identity.Client
                 "Confidential Client flows are not available on mobile platforms or on Mac." +
                 "See https://aka.ms/msal-net-confidential-availability for details.");
 #endif
+        }
+
+        private static IConfidentialClientApplicationExecutor CreateConfidentialClientExecutor(
+            ConfidentialClientApplication confidentialClientApplication)
+        {
+            IConfidentialClientApplicationExecutor executor = new ConfidentialClientExecutor(
+                confidentialClientApplication.ServiceBundle,
+                confidentialClientApplication);
+
+            if (IsMatsEnabled(confidentialClientApplication))
+            {
+                executor = new TelemetryConfidentialClientExecutor(executor, confidentialClientApplication.ServiceBundle.Mats);
+            }
+
+            return executor;
+        }
+
+        private static bool IsMatsEnabled(ClientApplicationBase clientApplicationBase)
+        {
+            return clientApplicationBase.ServiceBundle.Mats != null;
         }
     }
 
