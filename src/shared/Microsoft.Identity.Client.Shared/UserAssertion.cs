@@ -16,10 +16,8 @@ namespace Microsoft.Identity.Client
     /// for another downsteam API in the name of the user whose credentials are held by this <c>UserAssertion</c>
     /// See https://aka.ms/msal-net-on-behalf-of
     /// </summary>
-#if DESKTOP || NET_CORE || NETSTANDARD1_3
-    /// <seealso cref="IConfidentialClientApplication.AcquireTokenOnBehalfOf(System.Collections.Generic.IEnumerable{string}, UserAssertion)"/>
-#endif
-    public sealed class UserAssertion
+
+    public sealed class UserAssertion //TODO - sep: move to CCA
 #pragma warning restore CS1587 // XML comment is not placed on a valid language element
     {
         /// <summary>

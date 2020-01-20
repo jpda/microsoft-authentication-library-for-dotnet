@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Threading.Tasks;
 using System.Reflection;
 using System.Net.NetworkInformation;
 using System.Linq;
@@ -10,9 +9,7 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.PlatformsCommon.Shared;
 using Microsoft.Identity.Client.Cache;
-using Microsoft.Identity.Client.UI;
 using Microsoft.Identity.Client.TelemetryCore.Internal;
-using System.Diagnostics;
 
 namespace Microsoft.Identity.Client.Platforms.Mac
 {
