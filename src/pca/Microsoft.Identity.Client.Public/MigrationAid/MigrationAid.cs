@@ -1,11 +1,22 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.PlatformsCommon.Factories;
+using System.Diagnostics;
+
+#if ANDROID
+using Android.App;
+#endif
+
+#if iOS
+using Microsoft.Identity.Client.Platforms.iOS;
+#endif
 
 namespace Microsoft.Identity.Client
 {

@@ -150,7 +150,7 @@ namespace Microsoft.Identity.Client
         /// </description></item>
         /// </list>
         /// These default URIs could change in the future.
-        /// In <see cref="Microsoft.Identity.Client.ConfidentialClientApplication"/>, this can be the URL of the Web application / Web API.
+        /// In a ConfidentialClientApplication, this can be the URL of the Web application / Web API.
         /// </summary>
         /// <remarks>This is especially important when you deploy an application that you have initially tested locally;
         /// you then need to add the reply URL of the deployed application in the application registration portal.
@@ -494,76 +494,5 @@ namespace Microsoft.Identity.Client
         {
             throw new NotImplementedException(MsalErrorMessage.TelemetryClassIsObsolete);
         }
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    [Obsolete("In MSAL.NET 3.x, you should directly pass the Activity (on Xamarin.Android), or Window (on .NET Framework and UWP) using AcquireTokenInteractiveParameterBuilder.WithParentActivityOrWindow" + MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-    public sealed class UIParent
-    {
-        /// <summary>
-        /// </summary>
-        [Obsolete(MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public UIParent() // do not delete this ctor because it exists on NetStandard
-        {
-            throw new NotImplementedException(MsalErrorMessage.AkaMsmsalnet3BreakingChanges);
-        }
-
-        /// <summary>
-        /// </summary>
-        [Obsolete(MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public UIParent(object parent, bool useEmbeddedWebView)
-        {
-            throw new NotImplementedException(MsalErrorMessage.AkaMsmsalnet3BreakingChanges);
-        }
-
-        /// <summary>
-        /// Checks Android device for chrome packages.
-        /// Returns true if chrome package for launching system webview is enabled on device.
-        /// Returns false if chrome package is not found.
-        /// </summary>
-        /// <example>
-        /// The following code decides, in a Xamarin.Forms app, which browser to use based on the presence of the
-        /// required packages.
-        /// <code>
-        /// bool useSystemBrowser = UIParent.IsSystemWebviewAvailable();
-        /// App.UIParent = new UIParent(Xamarin.Forms.Forms.Context as Activity, !useSystemBrowser);
-        /// </code>
-        /// </example>
-        [Obsolete(MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool IsSystemWebviewAvailable()
-        {
-            throw new NotImplementedException(MsalErrorMessage.AkaMsmsalnet3BreakingChanges);
-        }
-
-#if ANDROID
-        /// <summary>
-        /// Initializes an instance for a provided activity.
-        /// </summary>
-        /// <param name="activity">parent activity for the call. REQUIRED.</param>
-        [CLSCompliant(false)]
-        [Obsolete(MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public UIParent(Activity activity)
-        {
-            throw new NotImplementedException(MsalErrorMessage.AkaMsmsalnet3BreakingChanges);
-        }
-
-        /// <summary>
-        /// Initializes an instance for a provided activity with flag directing the application
-        /// to use the embedded webview instead of the system browser. See https://aka.ms/msal-net-uses-web-browser
-        /// </summary>
-        [CLSCompliant(false)]
-        [Obsolete(MsalErrorMessage.AkaMsmsalnet3BreakingChanges, true)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public UIParent(Activity activity, bool useEmbeddedWebview) : this(activity)
-        {
-            throw new NotImplementedException(MsalErrorMessage.AkaMsmsalnet3BreakingChanges);
-        }
-#endif
     }
 }
