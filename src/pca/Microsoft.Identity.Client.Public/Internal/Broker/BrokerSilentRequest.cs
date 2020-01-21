@@ -6,47 +6,43 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client.ApiConfig.Parameters;
 using Microsoft.Identity.Client.Core;
-using Microsoft.Identity.Client.Internal.Requests;
 using Microsoft.Identity.Client.OAuth2;
 using Microsoft.Identity.Client.Shared.Requests;
 using Microsoft.Identity.Client.UI;
 using Microsoft.Identity.Client.Utils;
-using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.Internal.Broker
 {
-    internal class BrokerSilentRequest : RequestBase
+    internal class BrokerSilentRequest
     {
-        public Dictionary<string, string> BrokerPayload = new Dictionary<string, string>();
+        public Dictionary<string, string> BrokerPayload
+            = new Dictionary<string, string>();
         internal IBroker Broker { get; }
         private readonly AcquireTokenSilentParameters _silentParameters;
         private readonly AuthenticationRequestParameters _authenticationRequestParameters;
         private readonly IServiceBundle _serviceBundle;
 
         internal BrokerSilentRequest(
-            IServiceBundle serviceBundle,
             AuthenticationRequestParameters authenticationRequestParameters,
             AcquireTokenSilentParameters acquireTokenSilentParameters,
-            IBroker broker = null)
-            : base (serviceBundle, authenticationRequestParameters, acquireTokenSilentParameters)
+            IServiceBundle serviceBundle,
+            IBroker broker)
         {
             _authenticationRequestParameters = authenticationRequestParameters;
             _silentParameters = acquireTokenSilentParameters;
             _serviceBundle = serviceBundle;
-            Broker = broker ?? serviceBundle.GetPcaPlatformProxy().CreateBroker(null);
+            Broker = broker;
         }
 
-
-        internal override async Task<AuthenticationResult> ExecuteAsync(CancellationToken cancellationToken)
+        public async Task<MsalTokenResponse> SendTokenRequestToBrokerAsync()
         {
+            //TODO: call can invoke broker here
             _authenticationRequestParameters.RequestContext.Logger.Info(LogMessages.CanInvokeBrokerAcquireTokenWithBroker);
 
-            var msalTokenResponse = await SendAndVerifyResponseAsync().ConfigureAwait(false);
-            return await CacheTokenResponseAndCreateAuthenticationResultAsync(msalTokenResponse).ConfigureAwait(false);
+            return await SendAndVerifyResponseAsync().ConfigureAwait(false);
         }
 
         private async Task<MsalTokenResponse> SendAndVerifyResponseAsync()
@@ -60,7 +56,7 @@ namespace Microsoft.Identity.Client.Internal.Broker
             return msalTokenResponse;
         }
 
-        private void CreateRequestParametersForBroker()
+        internal void CreateRequestParametersForBroker()
         {
             BrokerPayload.Add(BrokerParameter.Authority, _authenticationRequestParameters.Authority.AuthorityInfo.CanonicalAuthority);
             string scopes = EnumerableExtensions.AsSingleString(_authenticationRequestParameters.Scope);
@@ -78,7 +74,7 @@ namespace Microsoft.Identity.Client.Internal.Broker
 #pragma warning restore CA1305 // Specify IFormatProvider
         }
 
-        private void ValidateResponseFromBroker(MsalTokenResponse msalTokenResponse)
+        internal void ValidateResponseFromBroker(MsalTokenResponse msalTokenResponse)
         {
             _authenticationRequestParameters.RequestContext.Logger.Info(LogMessages.CheckMsalTokenResponseReturnedFromBroker);
             if (msalTokenResponse.AccessToken != null)
@@ -100,7 +96,5 @@ namespace Microsoft.Identity.Client.Internal.Broker
                 throw new MsalServiceException(MsalError.BrokerResponseReturnedError, MsalErrorMessage.BrokerResponseReturnedError, null);
             }
         }
-
-      
     }
 }
