@@ -25,7 +25,7 @@ namespace Microsoft.Identity.Client.Internal.Broker
         private readonly AuthenticationRequestParameters _authenticationRequestParameters;
         private readonly IServiceBundle _serviceBundle;
 
-        internal BrokerSilentRequest(
+        internal BrokerSilentRequest(  // TODO sep: Re-integrate broker silent request in the silent request flow
             AuthenticationRequestParameters authenticationRequestParameters,
             AcquireTokenSilentParameters acquireTokenSilentParameters,
             IServiceBundle serviceBundle,

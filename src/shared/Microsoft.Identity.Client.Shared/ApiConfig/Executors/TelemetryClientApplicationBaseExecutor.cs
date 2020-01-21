@@ -31,5 +31,15 @@ namespace Microsoft.Identity.Client.Shared.ApiConfig.Executors
                 commonParameters,
                 async () => await _executor.ExecuteAsync(commonParameters, byRefreshTokenParameters, cancellationToken).ConfigureAwait(false));
         }
+
+        public Task<AuthenticationResult> ExecuteAsync(
+            AcquireTokenCommonParameters commonParameters,
+            AcquireTokenSilentParameters silentParameters,
+            CancellationToken cancellationToken)
+        {
+            return ExecuteMatsAsync(
+               commonParameters,
+               async () => await _executor.ExecuteAsync(commonParameters, silentParameters, cancellationToken).ConfigureAwait(false));
+        }
     }
 }
