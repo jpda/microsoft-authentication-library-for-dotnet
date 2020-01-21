@@ -15,17 +15,17 @@ namespace Microsoft.Identity.Client.Confidential.ApiConfig.Parameters
         public IEnumerable<string> ExtraScopesToConsent { get; set; }
         public string LoginHint { get; set; }
 
-        public AcquireTokenInteractiveParameters ToInteractiveParameters()
-        {
-            return new AcquireTokenInteractiveParameters
-            {
-                Account = Account,
-                ExtraScopesToConsent = ExtraScopesToConsent,
-                LoginHint = LoginHint,
-                Prompt = Prompt.SelectAccount,
-                UseEmbeddedWebView = WebViewPreference.NotSpecified
-            };
-        }
+        //public AcquireTokenInteractiveParameters ToInteractiveParameters() //TODO sep: need to separate GetAuthCode from LoginInteractive
+        //{
+        //    return new AcquireTokenInteractiveParameters
+        //    {
+        //        Account = Account,
+        //        ExtraScopesToConsent = ExtraScopesToConsent,
+        //        LoginHint = LoginHint,
+        //        Prompt = Prompt.SelectAccount,
+        //        UseEmbeddedWebView = WebViewPreference.NotSpecified
+        //    };
+        //}
 
         /// <inheritdoc />
         public void LogParameters(ICoreLogger logger)
