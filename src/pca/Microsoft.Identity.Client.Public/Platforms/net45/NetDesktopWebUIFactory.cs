@@ -5,6 +5,7 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Platforms.Shared.Desktop.OsBrowser;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
 using Microsoft.Identity.Client.UI;
+using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.Platforms.net45
 {
@@ -20,7 +21,7 @@ namespace Microsoft.Identity.Client.Platforms.net45
             if (!parent.UseEmbeddedWebview)
             {
                 return new DefaultOsBrowserWebUi(
-                    requestContext.ServiceBundle.PlatformProxy,
+                    requestContext.ServiceBundle.GetPcaPlatformProxy(),
                     requestContext.Logger,
                     parent.SystemWebViewOptions);
             }
