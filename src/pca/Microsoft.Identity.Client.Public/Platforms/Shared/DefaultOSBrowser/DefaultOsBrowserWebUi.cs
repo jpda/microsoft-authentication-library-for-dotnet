@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Platforms.Shared.DefaultOSBrowser;
 using Microsoft.Identity.Client.PlatformsCommon.Interfaces;
+using Microsoft.Identity.Client.Public.PlatformsCommon;
 using Microsoft.Identity.Client.UI;
 
 namespace Microsoft.Identity.Client.Platforms.Shared.Desktop.OsBrowser
@@ -37,17 +38,17 @@ namespace Microsoft.Identity.Client.Platforms.Shared.Desktop.OsBrowser
         private readonly IUriInterceptor _uriInterceptor;
         private readonly ICoreLogger _logger;
         private readonly SystemWebViewOptions _webViewOptions;
-        private readonly IPlatformProxy _platformProxy;
+        private readonly IPcaPlatformProxy _pcaPlatformProxy;
 
         public DefaultOsBrowserWebUi(
-            IPlatformProxy proxy,
+            IPcaPlatformProxy proxy,
             ICoreLogger logger,
             SystemWebViewOptions webViewOptions,
             /* for test */ IUriInterceptor uriInterceptor = null)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _webViewOptions = webViewOptions;
-            _platformProxy = proxy ?? throw new ArgumentNullException(nameof(proxy));
+            _pcaPlatformProxy = proxy ?? throw new ArgumentNullException(nameof(proxy));
 
             _uriInterceptor = uriInterceptor ?? new HttpListenerInterceptor(_logger);
         }
@@ -129,7 +130,7 @@ namespace Microsoft.Identity.Client.Platforms.Shared.Desktop.OsBrowser
             Uri redirectUri,
             CancellationToken cancellationToken)
         {
-            Func<Uri, Task> defaultBrowserAction = (Uri u) => _platformProxy.StartDefaultOsBrowserAsync(u.AbsoluteUri);
+            Func<Uri, Task> defaultBrowserAction = (Uri u) => _pcaPlatformProxy.StartDefaultOsBrowserAsync(u.AbsoluteUri);
             Func<Uri, Task> openBrowserAction = _webViewOptions?.OpenBrowserAsync ?? defaultBrowserAction;
 
             await openBrowserAction(authorizationUri).ConfigureAwait(false);

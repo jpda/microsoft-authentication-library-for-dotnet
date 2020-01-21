@@ -9,6 +9,7 @@ using Microsoft.Identity.Client.Core;
 using Microsoft.Identity.Client.Internal.Requests;
 using Microsoft.Identity.Client.Shared.ApiConfig.Executors;
 using Microsoft.Identity.Client.UI;
+using Microsoft.Identity.Client.WsTrust;
 
 namespace Microsoft.Identity.Client.ApiConfig.Executors
 {
@@ -128,7 +129,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
 
             coreUiParent.UseEmbeddedWebview = GetUseEmbeddedWebview(
                 interactiveParameters.UseEmbeddedWebView,
-                requestContext.ServiceBundle.PlatformProxy.UseEmbeddedWebViewDefault);
+                requestContext.ServiceBundle.GetPcaPlatformProxy().UseEmbeddedWebViewDefault);
 
 #if WINDOWS_APP || DESKTOP
             // hidden web view can be used in both WinRT and desktop applications.
@@ -137,7 +138,7 @@ namespace Microsoft.Identity.Client.ApiConfig.Executors
             coreUiParent.UseCorporateNetwork = _publicClientApplication.AppConfig.UseCorporateNetwork;
 #endif
 #endif
-            return ServiceBundle.PlatformProxy.GetWebUiFactory().CreateAuthenticationDialog(
+            return ServiceBundle.GetPcaPlatformProxy().GetWebUiFactory().CreateAuthenticationDialog(
                 coreUiParent,
                 requestContext);
         }

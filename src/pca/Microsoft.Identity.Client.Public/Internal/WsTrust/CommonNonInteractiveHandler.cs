@@ -28,7 +28,7 @@ namespace Microsoft.Identity.Client.WsTrust
         /// </summary>
         public async Task<string> GetPlatformUserAsync()
         {
-            string platformUsername = await _serviceBundle.PlatformProxy.GetUserPrincipalNameAsync().ConfigureAwait(false);
+            string platformUsername = await _serviceBundle.GetPcaPlatformProxy().GetUserPrincipalNameAsync().ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(platformUsername))
             {
                 _requestContext.Logger.Error("Could not find UPN for logged in user.");
