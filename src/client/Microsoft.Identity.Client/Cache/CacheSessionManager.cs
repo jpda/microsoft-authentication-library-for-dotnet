@@ -111,7 +111,9 @@ namespace Microsoft.Identity.Client.Cache
                                _requestParams.ClientId,
                                _requestParams.Account,
                                hasStateChanged: false, 
-                               TokenCacheInternal.IsApplicationCache);
+                               TokenCacheInternal.IsApplicationCache,
+                               _requestParams.LoginHint
+                               );
 
                             await TokenCacheInternal.OnBeforeAccessAsync(args).ConfigureAwait(false);
                             await TokenCacheInternal.OnAfterAccessAsync(args).ConfigureAwait(false);

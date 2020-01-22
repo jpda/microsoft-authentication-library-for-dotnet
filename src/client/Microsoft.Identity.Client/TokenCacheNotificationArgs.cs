@@ -16,13 +16,15 @@ namespace Microsoft.Identity.Client
             string clientId,
             IAccount account,
             bool hasStateChanged,
-            bool isAppCache)
+            bool isAppCache,
+            string loginHint = "")
         {
             TokenCache = tokenCacheSerializer;
             ClientId = clientId;
             Account = account;
             HasStateChanged = hasStateChanged;
             IsApplicationCache = isAppCache;
+            LoginHint = loginHint;
         }
 
         /// <summary>
@@ -55,5 +57,10 @@ namespace Microsoft.Identity.Client
         /// See https://aka.ms/msal-net-app-cache-serialization for details.
         /// </remarks>
         public bool IsApplicationCache { get; }
+
+        /// <summary>
+        /// Supplied login_hint, if provided.
+        /// </summary>
+        public string LoginHint { get; set; }
     }
 }
